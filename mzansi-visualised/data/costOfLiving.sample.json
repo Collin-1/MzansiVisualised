@@ -1,0 +1,376 @@
+{
+  "provinces": [
+    "Western Cape",
+    "Gauteng",
+    "KwaZulu-Natal",
+    "Eastern Cape",
+    "Free State",
+    "Mpumalanga",
+    "North West",
+    "Northern Cape",
+    "Limpopo"
+  ],
+  "weights": {
+    "food": 0.3,
+    "housing": 0.28,
+    "utilities": 0.18,
+    "transport": 0.16,
+    "other": 0.08
+  },
+  "months": [
+    {
+      "date": "2025-08",
+      "values": {
+        "Western Cape": {
+          "food": 110,
+          "housing": 120,
+          "utilities": 115,
+          "transport": 112
+        },
+        "Gauteng": {
+          "food": 105,
+          "housing": 110,
+          "utilities": 108,
+          "transport": 107
+        },
+        "KwaZulu-Natal": {
+          "food": 102,
+          "housing": 104,
+          "utilities": 103,
+          "transport": 101
+        },
+        "Eastern Cape": {
+          "food": 98,
+          "housing": 95,
+          "utilities": 97,
+          "transport": 96
+        },
+        "Free State": {
+          "food": 97,
+          "housing": 96,
+          "utilities": 95,
+          "transport": 94
+        },
+        "Mpumalanga": {
+          "food": 99,
+          "housing": 97,
+          "utilities": 98,
+          "transport": 97
+        },
+        "North West": {
+          "food": 96,
+          "housing": 94,
+          "utilities": 95,
+          "transport": 93
+        },
+        "Northern Cape": {
+          "food": 95,
+          "housing": 93,
+          "utilities": 94,
+          "transport": 92
+        },
+        "Limpopo": {
+          "food": 92,
+          "housing": 90,
+          "utilities": 91,
+          "transport": 89
+        }
+      }
+    },
+    {
+      "date": "2025-09",
+      "values": {
+        "Western Cape": {
+          "food": 112,
+          "housing": 122,
+          "utilities": 117,
+          "transport": 114
+        },
+        "Gauteng": {
+          "food": 106,
+          "housing": 111,
+          "utilities": 109,
+          "transport": 108
+        },
+        "KwaZulu-Natal": {
+          "food": 103,
+          "housing": 105,
+          "utilities": 104,
+          "transport": 102
+        },
+        "Eastern Cape": {
+          "food": 99,
+          "housing": 96,
+          "utilities": 98,
+          "transport": 97
+        },
+        "Free State": {
+          "food": 98,
+          "housing": 97,
+          "utilities": 96,
+          "transport": 95
+        },
+        "Mpumalanga": {
+          "food": 100,
+          "housing": 98,
+          "utilities": 99,
+          "transport": 98
+        },
+        "North West": {
+          "food": 97,
+          "housing": 95,
+          "utilities": 96,
+          "transport": 94
+        },
+        "Northern Cape": {
+          "food": 96,
+          "housing": 94,
+          "utilities": 95,
+          "transport": 93
+        },
+        "Limpopo": {
+          "food": 93,
+          "housing": 91,
+          "utilities": 92,
+          "transport": 90
+        }
+      }
+    },
+    {
+      "date": "2025-10",
+      "values": {
+        "Western Cape": {
+          "food": 113,
+          "housing": 123,
+          "utilities": 118,
+          "transport": 115
+        },
+        "Gauteng": {
+          "food": 107,
+          "housing": 112,
+          "utilities": 110,
+          "transport": 109
+        },
+        "KwaZulu-Natal": {
+          "food": 104,
+          "housing": 106,
+          "utilities": 105,
+          "transport": 103
+        },
+        "Eastern Cape": {
+          "food": 100,
+          "housing": 97,
+          "utilities": 99,
+          "transport": 98
+        },
+        "Free State": {
+          "food": 99,
+          "housing": 98,
+          "utilities": 97,
+          "transport": 96
+        },
+        "Mpumalanga": {
+          "food": 101,
+          "housing": 99,
+          "utilities": 100,
+          "transport": 99
+        },
+        "North West": {
+          "food": 98,
+          "housing": 96,
+          "utilities": 97,
+          "transport": 95
+        },
+        "Northern Cape": {
+          "food": 97,
+          "housing": 95,
+          "utilities": 96,
+          "transport": 94
+        },
+        "Limpopo": {
+          "food": 94,
+          "housing": 92,
+          "utilities": 93,
+          "transport": 91
+        }
+      }
+    },
+    {
+      "date": "2025-11",
+      "values": {
+        "Western Cape": {
+          "food": 114,
+          "housing": 124,
+          "utilities": 119,
+          "transport": 116
+        },
+        "Gauteng": {
+          "food": 108,
+          "housing": 113,
+          "utilities": 111,
+          "transport": 110
+        },
+        "KwaZulu-Natal": {
+          "food": 105,
+          "housing": 107,
+          "utilities": 106,
+          "transport": 104
+        },
+        "Eastern Cape": {
+          "food": 101,
+          "housing": 98,
+          "utilities": 100,
+          "transport": 99
+        },
+        "Free State": {
+          "food": 100,
+          "housing": 99,
+          "utilities": 98,
+          "transport": 97
+        },
+        "Mpumalanga": {
+          "food": 102,
+          "housing": 100,
+          "utilities": 101,
+          "transport": 100
+        },
+        "North West": {
+          "food": 99,
+          "housing": 97,
+          "utilities": 98,
+          "transport": 96
+        },
+        "Northern Cape": {
+          "food": 98,
+          "housing": 96,
+          "utilities": 97,
+          "transport": 95
+        },
+        "Limpopo": {
+          "food": 95,
+          "housing": 93,
+          "utilities": 94,
+          "transport": 92
+        }
+      }
+    },
+    {
+      "date": "2025-12",
+      "values": {
+        "Western Cape": {
+          "food": 115,
+          "housing": 125,
+          "utilities": 120,
+          "transport": 117
+        },
+        "Gauteng": {
+          "food": 109,
+          "housing": 114,
+          "utilities": 112,
+          "transport": 111
+        },
+        "KwaZulu-Natal": {
+          "food": 106,
+          "housing": 108,
+          "utilities": 107,
+          "transport": 105
+        },
+        "Eastern Cape": {
+          "food": 102,
+          "housing": 99,
+          "utilities": 101,
+          "transport": 100
+        },
+        "Free State": {
+          "food": 101,
+          "housing": 100,
+          "utilities": 99,
+          "transport": 98
+        },
+        "Mpumalanga": {
+          "food": 103,
+          "housing": 101,
+          "utilities": 102,
+          "transport": 101
+        },
+        "North West": {
+          "food": 100,
+          "housing": 98,
+          "utilities": 99,
+          "transport": 97
+        },
+        "Northern Cape": {
+          "food": 99,
+          "housing": 97,
+          "utilities": 98,
+          "transport": 96
+        },
+        "Limpopo": {
+          "food": 96,
+          "housing": 94,
+          "utilities": 95,
+          "transport": 93
+        }
+      }
+    },
+    {
+      "date": "2026-01",
+      "values": {
+        "Western Cape": {
+          "food": 116,
+          "housing": 126,
+          "utilities": 121,
+          "transport": 118
+        },
+        "Gauteng": {
+          "food": 110,
+          "housing": 115,
+          "utilities": 113,
+          "transport": 112
+        },
+        "KwaZulu-Natal": {
+          "food": 107,
+          "housing": 109,
+          "utilities": 108,
+          "transport": 106
+        },
+        "Eastern Cape": {
+          "food": 103,
+          "housing": 100,
+          "utilities": 102,
+          "transport": 101
+        },
+        "Free State": {
+          "food": 102,
+          "housing": 101,
+          "utilities": 100,
+          "transport": 99
+        },
+        "Mpumalanga": {
+          "food": 104,
+          "housing": 102,
+          "utilities": 103,
+          "transport": 102
+        },
+        "North West": {
+          "food": 101,
+          "housing": 99,
+          "utilities": 100,
+          "transport": 98
+        },
+        "Northern Cape": {
+          "food": 100,
+          "housing": 98,
+          "utilities": 99,
+          "transport": 97
+        },
+        "Limpopo": {
+          "food": 97,
+          "housing": 95,
+          "utilities": 96,
+          "transport": 94
+        }
+      }
+    }
+  ]
+}
