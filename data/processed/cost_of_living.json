@@ -1,0 +1,74 @@
+[
+  {
+    "province":"Western Cape",
+    "avg_rent":10118,
+    "cpi_index":102.5,
+    "rent_norm":1.1780183956,
+    "cpi_norm":1.0019550342,
+    "score":1.1075930511,
+    "rank":1
+  },
+  {
+    "province":"Northern Cape",
+    "avg_rent":9409,
+    "cpi_index":102.6,
+    "rent_norm":1.0954709512,
+    "cpi_norm":1.0029325513,
+    "score":1.0584555913,
+    "rank":2
+  },
+  {
+    "province":"Gauteng",
+    "avg_rent":8846,
+    "cpi_index":102.3,
+    "rent_norm":1.0299219932,
+    "cpi_norm":1.0,
+    "score":1.0179531959,
+    "rank":3
+  },
+  {
+    "province":"KwaZulu-Natal",
+    "avg_rent":8755,
+    "cpi_index":102.2,
+    "rent_norm":1.0193270462,
+    "cpi_norm":0.9990224829,
+    "score":1.0112052209,
+    "rank":4
+  },
+  {
+    "province":"Mpumalanga",
+    "avg_rent":8423,
+    "cpi_index":102.1,
+    "rent_norm":0.9806729538,
+    "cpi_norm":0.9980449658,
+    "score":0.9876217586,
+    "rank":5
+  },
+  {
+    "province":"Limpopo",
+    "avg_rent":7919,
+    "cpi_index":102.6,
+    "rent_norm":0.9219932472,
+    "cpi_norm":1.0029325513,
+    "score":0.9543689688,
+    "rank":6
+  },
+  {
+    "province":"Eastern Cape",
+    "avg_rent":7018,
+    "cpi_index":102.3,
+    "rent_norm":0.8170916288,
+    "cpi_norm":1.0,
+    "score":0.8902549773,
+    "rank":7
+  },
+  {
+    "province":"Free State",
+    "avg_rent":6969,
+    "cpi_index":102.0,
+    "rent_norm":0.8113866574,
+    "cpi_norm":0.9970674487,
+    "score":0.8856589739,
+    "rank":8
+  }
+]
