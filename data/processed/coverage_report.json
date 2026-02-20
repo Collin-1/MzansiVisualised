@@ -1,0 +1,8 @@
+{
+  "rent_provinces_count": 9,
+  "cpi_provinces_count": 8,
+  "missing_in_cpi": [
+    "north west"
+  ],
+  "extra_in_cpi": []
+}
