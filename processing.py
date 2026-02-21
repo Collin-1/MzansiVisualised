@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 import os
+import json
 
 # Get the directory of the script
 script_dir = os.path.dirname(os.path.abspath(__file__))
+STRICT_COVERAGE = False
 
 # Load data
 rent = pd.read_csv(os.path.join(script_dir, "data/raw/rent.csv"))
@@ -55,6 +57,29 @@ latest_cpi.columns = ["province", "cpi_index"]
 # Normalize province names for merge
 rent['province_norm'] = rent['province'].str.replace('-', '').str.lower()
 latest_cpi['province_norm'] = latest_cpi['province'].str.replace('-', '').str.lower()
+
+# Coverage check before merge
+rent_province_set = set(rent['province_norm'])
+cpi_province_set = set(latest_cpi['province_norm'])
+missing_in_cpi = sorted(rent_province_set - cpi_province_set)
+extra_in_cpi = sorted(cpi_province_set - rent_province_set)
+
+coverage_report = {
+	"rent_provinces_count": len(rent_province_set),
+	"cpi_provinces_count": len(cpi_province_set),
+	"missing_in_cpi": missing_in_cpi,
+	"extra_in_cpi": extra_in_cpi,
+}
+
+coverage_report_path = os.path.join(script_dir, "data/processed/coverage_report.json")
+with open(coverage_report_path, "w", encoding="utf-8") as report_file:
+	json.dump(coverage_report, report_file, indent=2)
+
+if missing_in_cpi:
+	message = f"Missing CPI province data for: {missing_in_cpi}"
+	if STRICT_COVERAGE:
+		raise ValueError(message)
+	print(f"WARNING: {message}")
 
 # Merge datasets
 df = rent.merge(latest_cpi, on="province_norm", suffixes=('', '_cpi'))
