@@ -8,20 +8,20 @@ Weekly data visualizations about South Africa.
 
 If you know Flask, you already understand the concepts. The vocabulary just changed.
 
-| Flask | Next.js (App Router) |
-|-------|---------------------|
-| `app.py` | `app/layout.tsx` |
-| `@app.route('/')` | `app/page.tsx` |
-| `@app.route('/issues/<slug>')` | `app/issues/[slug]/page.tsx` |
+| Flask                          | Next.js (App Router)                             |
+| ------------------------------ | ------------------------------------------------ |
+| `app.py`                       | `app/layout.tsx`                                 |
+| `@app.route('/')`              | `app/page.tsx`                                   |
+| `@app.route('/issues/<slug>')` | `app/issues/[slug]/page.tsx`                     |
 | `render_template('base.html')` | `<SiteHeader />` + `<SiteFooter />` (components) |
-| Jinja2 `{% extends %}` | `layout.tsx` wrapping `{children}` |
-| `static/style.css` | `app/globals.css` + Tailwind classes |
-| `models.py` (SQLAlchemy) | `data/issues.ts` (TypeScript arrays, for now) |
-| `jsonify(data)` | `route.tsx` returning `NextResponse.json(data)` |
-| `.env` + `python-dotenv` | `.env.local` (built into Next.js) |
-| `flask run` | `npm run dev` |
-| `gunicorn app:app` on a VPS | `vercel deploy` (serverless, zero config) |
-| Frozen-Flask (static export) | `next build` (static + serverless hybrid) |
+| Jinja2 `{% extends %}`         | `layout.tsx` wrapping `{children}`               |
+| `static/style.css`             | `app/globals.css` + Tailwind classes             |
+| `models.py` (SQLAlchemy)       | `data/issues.ts` (TypeScript arrays, for now)    |
+| `jsonify(data)`                | `route.tsx` returning `NextResponse.json(data)`  |
+| `.env` + `python-dotenv`       | `.env.local` (built into Next.js)                |
+| `flask run`                    | `npm run dev`                                    |
+| `gunicorn app:app` on a VPS    | `vercel deploy` (serverless, zero config)        |
+| Frozen-Flask (static export)   | `next build` (static + serverless hybrid)        |
 
 ---
 
@@ -146,10 +146,10 @@ Create `data/your-topic.ts`:
 ```typescript
 // data/gdp-by-province.ts
 export const GDP_DATA = {
-  GP:  { name: 'Gauteng',      gdpBn: 1_400, share: 34.2 },
-  WC:  { name: 'Western Cape', gdpBn:  620,  share: 15.1 },
+  GP: { name: "Gauteng", gdpBn: 1_400, share: 34.2 },
+  WC: { name: "Western Cape", gdpBn: 620, share: 15.1 },
   // ...
-}
+};
 ```
 
 ### Step 2 — Build the visualization component
@@ -157,15 +157,11 @@ export const GDP_DATA = {
 Create `components/visualizations/GdpByProvince.tsx`:
 
 ```tsx
-'use client'
-import { GDP_DATA } from '@/data/gdp-by-province'
+"use client";
+import { GDP_DATA } from "@/data/gdp-by-province";
 
 export default function GdpByProvince() {
-  return (
-    <div>
-      {/* Your chart/map/visualization */}
-    </div>
-  )
+  return <div>{/* Your chart/map/visualization */}</div>;
 }
 ```
 
@@ -205,12 +201,14 @@ That's it. Run `npm run dev` and visit `/issues/gdp-by-province`.
 Next.js has two "worlds":
 
 **Server components** (default — no `'use client'` at top):
+
 - Rendered on the server, like a Flask route
 - Can read files, fetch from databases, run any Node.js code
 - The HTML is sent to the browser — great for SEO
 - Cannot use `useState`, `useEffect`, or any browser APIs
 
 **Client components** (`'use client'` at top of file):
+
 - Run in the browser, like React has always worked
 - Can use `useState`, `useEffect`, event handlers, D3, window, etc.
 - Hydrated (activated) after the initial HTML loads
@@ -222,9 +220,9 @@ Next.js has two "worlds":
 `@/` maps to the root of your project. So:
 
 ```typescript
-import { fmtDate } from '@/lib/utils'
+import { fmtDate } from "@/lib/utils";
 // is the same as:
-import { fmtDate } from '../../lib/utils'
+import { fmtDate } from "../../lib/utils";
 ```
 
 Much cleaner — defined in `tsconfig.json`.
@@ -248,8 +246,8 @@ import Link from 'next/link'
 For images, use Next.js `Image` — it auto-optimizes, resizes, and lazy-loads:
 
 ```tsx
-import Image from 'next/image'
-<Image src="/logo.png" alt="Logo" width={200} height={100} />
+import Image from "next/image";
+<Image src="/logo.png" alt="Logo" width={200} height={100} />;
 ```
 
 ---
@@ -281,6 +279,7 @@ vercel --prod
 ### Auto-deploy on git push
 
 Connect your GitHub repo to Vercel:
+
 1. Push your code to GitHub
 2. Go to [vercel.com](https://vercel.com) → New Project → Import from GitHub
 3. Every `git push` to `main` automatically deploys
@@ -300,14 +299,61 @@ Add the same keys from your `.env.local` file.
 
 ---
 
+## Deploying to Render
+
+This repo now includes a Render Blueprint file at `render.yaml`.
+
+### Option A: Blueprint (recommended)
+
+1. Push this repo to GitHub.
+2. In Render, click **New +** → **Blueprint**.
+3. Connect your GitHub repo and select this project.
+4. Render reads `render.yaml` and creates the web service automatically.
+
+### Option B: Manual Web Service
+
+Use these settings in Render:
+
+- Runtime: Node
+- Build command: `npm ci && npm run build`
+- Start command: `npm run start`
+- Node version: `20.18.0`
+
+### Environment variables
+
+Add all variables from `.env.local.example` into Render's Environment tab.
+
+Also set:
+
+- `NEXT_TELEMETRY_DISABLED=1`
+
+### After deploy
+
+1. Open your Render URL (for example `https://mzansi-visualized.onrender.com`).
+2. Test these routes:
+
+- `/`
+- `/issues`
+- `/issues/province-house-prices`
+- `/issues/load-shedding-history`
+
+### Notes
+
+- Free Render instances can cold start after inactivity.
+- `next start` respects Render's `PORT` environment variable automatically.
+
+---
+
 ## Generating social share images
 
 The OG image endpoint is live at:
+
 ```
 https://mzansivisualized.co.za/api/og/province-house-prices
 ```
 
 Test locally at:
+
 ```
 http://localhost:3000/api/og/province-house-prices
 ```
@@ -331,26 +377,26 @@ node scripts/fetch-geodata.js   # Re-download province GeoJSON
 
 ## Recommended tools
 
-| Tool | Purpose | Why |
-|------|---------|-----|
-| [VS Code](https://code.visualstudio.com) | Editor | Best TypeScript support |
-| [Vercel](https://vercel.com) | Hosting | Zero-config Next.js deploys |
-| [Plausible](https://plausible.io) | Analytics | Privacy-first, POPIA-friendly |
-| [Buttondown](https://buttondown.com) | Newsletter | Free up to 1000 subscribers |
-| [Domains.co.za](https://domains.co.za) | Domain | Local `.co.za` registrar |
-| [Afrihost](https://afrihost.com) | Domain alt | Reliable SA registrar |
+| Tool                                     | Purpose    | Why                           |
+| ---------------------------------------- | ---------- | ----------------------------- |
+| [VS Code](https://code.visualstudio.com) | Editor     | Best TypeScript support       |
+| [Vercel](https://vercel.com)             | Hosting    | Zero-config Next.js deploys   |
+| [Plausible](https://plausible.io)        | Analytics  | Privacy-first, POPIA-friendly |
+| [Buttondown](https://buttondown.com)     | Newsletter | Free up to 1000 subscribers   |
+| [Domains.co.za](https://domains.co.za)   | Domain     | Local `.co.za` registrar      |
+| [Afrihost](https://afrihost.com)         | Domain alt | Reliable SA registrar         |
 
 ---
 
 ## Sources for future data
 
-| Dataset | Source | URL |
-|---------|--------|-----|
-| Census 2022 | StatsSA | statssa.gov.za |
-| Property prices | Lightstone | lightstone.co.za |
-| GDP by province | StatsSA | statssa.gov.za |
-| Crime stats | SAPS | saps.gov.za |
-| Load-shedding history | Eskom / EskomSePush | eskomsepush.app |
-| School performance | DBE | education.gov.za |
-| Reserve Bank data | SARB | resbank.co.za |
-| Municipal finances | National Treasury | treasury.gov.za |
+| Dataset               | Source              | URL              |
+| --------------------- | ------------------- | ---------------- |
+| Census 2022           | StatsSA             | statssa.gov.za   |
+| Property prices       | Lightstone          | lightstone.co.za |
+| GDP by province       | StatsSA             | statssa.gov.za   |
+| Crime stats           | SAPS                | saps.gov.za      |
+| Load-shedding history | Eskom / EskomSePush | eskomsepush.app  |
+| School performance    | DBE                 | education.gov.za |
+| Reserve Bank data     | SARB                | resbank.co.za    |
+| Municipal finances    | National Treasury   | treasury.gov.za  |
