@@ -1,0 +1,143 @@
+/* app/globals.css
+ *
+ * This is the ONE global CSS file. Everything else is done with Tailwind
+ * utility classes directly in the component files.
+ * Think of this like Flask's static/style.css — but much leaner.
+ */
+
+@tailwind base; /* Reset + sensible defaults */
+@tailwind components; /* Reusable component classes (we don't use many) */
+@tailwind utilities; /* Every utility class: flex, text-sm, bg-red-500, etc. */
+
+/* ── CSS custom properties (variables) ──────────────────────────────────── */
+:root {
+  --font-dm-sans: "DM Sans", system-ui, sans-serif;
+  --font-playfair: "Playfair Display", Georgia, serif;
+
+  /* Brand palette — used in Tailwind config AND in plain CSS/SVG */
+  --gold: #13795b;
+  --gold-lt: #d7f2e8;
+  --earth: #ebefea;
+  --earth-2: #f8fbf8;
+  --bark: #5f6d63;
+  --ash: #8ea195;
+
+  /* UI system */
+  --ui-bg: #e9ece7;
+  --ui-panel: #f7faf6;
+  --ui-panel-2: rgba(255, 255, 255, 0.72);
+  --ui-line: #d8e1d6;
+  --ui-ink: #152019;
+  --ui-shadow: 0 22px 48px rgba(25, 45, 30, 0.11);
+
+  /* Province colours — referenced directly in the map component */
+  --prov-WC: #c4562a;
+  --prov-GP: #b84020;
+  --prov-KZN: #cf8b50;
+  --prov-MP: #c87040;
+  --prov-LP: #d4904a;
+  --prov-EC: #d4734a;
+  --prov-NW: #d4a86a;
+  --prov-NC: #e8c88a;
+  --prov-FS: #ead39c;
+}
+
+/* ── Base typography ─────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-dm-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ui-ink);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(19, 121, 91, 0.1), transparent 42%),
+    radial-gradient(
+      circle at 90% 100%,
+      rgba(25, 62, 42, 0.08),
+      transparent 45%
+    ),
+    linear-gradient(160deg, #edf1ec 0%, #e5eae4 100%);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-playfair);
+  line-height: 1.1;
+}
+
+/* ── Smooth scrolling ────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Layout surfaces */
+.page-shell {
+  background: var(--ui-panel-2);
+  border: 1px solid var(--ui-line);
+  border-radius: 28px;
+  box-shadow: var(--ui-shadow);
+  backdrop-filter: blur(7px);
+}
+
+.ui-card {
+  background: var(--ui-panel);
+  border: 1px solid var(--ui-line);
+  border-radius: 18px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0f714f, #178860);
+  color: #fff;
+  border: 1px solid #0d6a4a;
+  border-radius: 999px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 113, 79, 0.28);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ui-ink);
+  border: 1px solid var(--ui-line);
+  border-radius: 999px;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.btn-secondary:hover {
+  background: #fff;
+  border-color: #b4c9bc;
+}
+
+/* ── Focus styles (accessibility) ───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ── Province SVG map hover/active states ────────────────────────────────── */
+.province-path {
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    filter 0.15s ease;
+}
+.province-path:hover {
+  filter: brightness(0.82);
+}
+.province-path.is-active {
+  filter: brightness(0.78);
+  stroke: white;
+  stroke-width: 2px;
+}
+.province-path.is-dimmed {
+  opacity: 0.45;
+}
