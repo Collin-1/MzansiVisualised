@@ -9,8 +9,8 @@
 // IMPORTANT: This file must be .tsx (not .ts) because the loading fallback
 // contains JSX — the <div> below. .ts files do not allow JSX syntax.
 
-import React          from 'react'
-import dynamic        from 'next/dynamic'
+import React from "react";
+import dynamic from "next/dynamic";
 
 // Loading fallback shown while the visualization JS chunk downloads.
 // Kept as a plain function so it can live in a .tsx file without 'use client'.
@@ -19,15 +19,18 @@ function LoadingFallback() {
     <div className="h-96 flex items-center justify-center text-brand-ash text-sm">
       Loading visualization…
     </div>
-  )
+  );
 }
 
 export const VIZ_REGISTRY: Record<string, React.ComponentType> = {
-  ProvinceHousePrices: dynamic(
-    () => import('./ProvinceHousePrices'),
-    { ssr: false, loading: LoadingFallback }
-  ),
+  ProvinceHousePrices: dynamic(() => import("./ProvinceHousePrices"), {
+    ssr: false,
+    loading: LoadingFallback,
+  }),
+  LoadSheddingHistory: dynamic(() => import("./LoadSheddingHistory"), {
+    ssr: false,
+  }),
   // Add future visualizations here:
   // GdpByProvince:   dynamic(() => import('./GdpByProvince'),   { ssr: false }),
   // UnemploymentMap: dynamic(() => import('./UnemploymentMap'), { ssr: false }),
-}
+};
