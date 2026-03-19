@@ -177,7 +177,7 @@ export default function ProvinceHousePrices() {
               const [[x0, y0], [x1, y1]] = pathGen.bounds(feature.geometry);
               const regionSize = Math.min(x1 - x0, y1 - y0);
               const numberSize = Math.max(24, Math.min(145, regionSize * 1.08));
-              const numberOpacity = isActive ? 0.5 : isDimmed ? 0.15 : 0.34;
+              const numberOpacity = isActive ? 0.42 : isDimmed ? 0.1 : 0.26;
               const clipId = `province-rank-clip-${code}`;
 
               return (
@@ -214,7 +214,7 @@ export default function ProvinceHousePrices() {
                       className="font-serif"
                       style={{
                         fontSize: `${numberSize * 1.04}px`,
-                        fill: "rgba(44, 24, 10, 0.24)",
+                        fill: "rgba(36, 20, 10, 0.18)",
                         opacity: numberOpacity,
                         fontWeight: 800,
                         letterSpacing: "0.015em",
@@ -234,11 +234,11 @@ export default function ProvinceHousePrices() {
                         fill: "url(#province-rank-fill)",
                         opacity: numberOpacity,
                         fontWeight: 900,
-                        stroke: "rgba(62, 30, 12, 0.2)",
-                        strokeWidth: 1.8,
+                        stroke: "rgba(62, 30, 12, 0.12)",
+                        strokeWidth: 1.2,
                         paintOrder: "stroke fill",
                         letterSpacing: "0.01em",
-                        mixBlendMode: "soft-light",
+                        mixBlendMode: "overlay",
                       }}
                     >
                       {data.rank}
@@ -251,10 +251,10 @@ export default function ProvinceHousePrices() {
                       className="font-serif"
                       style={{
                         fontSize: `${numberSize * 0.96}px`,
-                        fill: "rgba(255, 255, 255, 0.2)",
+                        fill: "rgba(255, 255, 255, 0.12)",
                         opacity: numberOpacity,
                         fontWeight: 700,
-                        mixBlendMode: "screen",
+                        mixBlendMode: "soft-light",
                       }}
                     >
                       {data.rank}
