@@ -156,9 +156,9 @@ export default function ProvinceHousePrices() {
                 x2="1"
                 y2="1"
               >
-                <stop offset="0%" stopColor="#fff9ea" />
-                <stop offset="45%" stopColor="#ffffff" />
-                <stop offset="100%" stopColor="#f6ddae" />
+                <stop offset="0%" stopColor="rgba(255,250,240,0.34)" />
+                <stop offset="45%" stopColor="rgba(255,255,255,0.28)" />
+                <stop offset="100%" stopColor="rgba(243,218,176,0.32)" />
               </linearGradient>
             </defs>
             {SA_GEOJSON.features.map((feature) => {
@@ -177,7 +177,7 @@ export default function ProvinceHousePrices() {
               const [[x0, y0], [x1, y1]] = pathGen.bounds(feature.geometry);
               const regionSize = Math.min(x1 - x0, y1 - y0);
               const numberSize = Math.max(24, Math.min(145, regionSize * 1.08));
-              const numberOpacity = isActive ? 0.64 : isDimmed ? 0.2 : 0.48;
+              const numberOpacity = isActive ? 0.5 : isDimmed ? 0.15 : 0.34;
               const clipId = `province-rank-clip-${code}`;
 
               return (
@@ -214,10 +214,11 @@ export default function ProvinceHousePrices() {
                       className="font-serif"
                       style={{
                         fontSize: `${numberSize * 1.04}px`,
-                        fill: "rgba(45, 20, 6, 0.34)",
+                        fill: "rgba(44, 24, 10, 0.24)",
                         opacity: numberOpacity,
                         fontWeight: 800,
                         letterSpacing: "0.015em",
+                        mixBlendMode: "multiply",
                       }}
                     >
                       {data.rank}
@@ -233,10 +234,11 @@ export default function ProvinceHousePrices() {
                         fill: "url(#province-rank-fill)",
                         opacity: numberOpacity,
                         fontWeight: 900,
-                        stroke: "rgba(74, 36, 16, 0.44)",
-                        strokeWidth: 2.6,
+                        stroke: "rgba(62, 30, 12, 0.2)",
+                        strokeWidth: 1.8,
                         paintOrder: "stroke fill",
                         letterSpacing: "0.01em",
+                        mixBlendMode: "soft-light",
                       }}
                     >
                       {data.rank}
@@ -249,9 +251,10 @@ export default function ProvinceHousePrices() {
                       className="font-serif"
                       style={{
                         fontSize: `${numberSize * 0.96}px`,
-                        fill: "rgba(255, 255, 255, 0.34)",
+                        fill: "rgba(255, 255, 255, 0.2)",
                         opacity: numberOpacity,
                         fontWeight: 700,
+                        mixBlendMode: "screen",
                       }}
                     >
                       {data.rank}
