@@ -80,18 +80,6 @@ const NAME_TO_CODE: Record<string, ProvinceCode> = {
   limpopo: "LP",
 };
 
-const NUMBER_TILT: Record<ProvinceCode, number> = {
-  WC: -6,
-  GP: 5,
-  KZN: -4,
-  MP: 6,
-  LP: -3,
-  EC: 4,
-  NW: -5,
-  NC: 3,
-  FS: -2,
-};
-
 // ── Component ───────────────────────────────────────────────────────────────
 export default function ProvinceHousePrices() {
   const [selected, setSelected] = useState<ProvinceCode>("WC");
@@ -161,14 +149,17 @@ export default function ProvinceHousePrices() {
         <div className="flex-1 relative p-2 min-h-[320px]">
           <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
             <defs>
-              <linearGradient id="province-rank-fill" x1="0" y1="0" x2="1" y2="1">
+              <linearGradient
+                id="province-rank-fill"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
                 <stop offset="0%" stopColor="#fff9ea" />
                 <stop offset="45%" stopColor="#ffffff" />
                 <stop offset="100%" stopColor="#f6ddae" />
               </linearGradient>
-              <filter id="province-rank-glow" x="-40%" y="-40%" width="180%" height="180%">
-                <feDropShadow dx="0" dy="1" stdDeviation="1.4" floodColor="rgba(20,10,0,0.35)" />
-              </filter>
             </defs>
             {SA_GEOJSON.features.map((feature) => {
               const rawName =
@@ -185,12 +176,17 @@ export default function ProvinceHousePrices() {
               const [centerX, centerY] = pathGen.centroid(feature.geometry);
               const [[x0, y0], [x1, y1]] = pathGen.bounds(feature.geometry);
               const regionSize = Math.min(x1 - x0, y1 - y0);
-              const numberSize = Math.max(20, Math.min(110, regionSize * 0.72));
+              const numberSize = Math.max(24, Math.min(145, regionSize * 1.08));
               const numberOpacity = isActive ? 0.64 : isDimmed ? 0.2 : 0.48;
-              const numberTilt = NUMBER_TILT[code];
+              const clipId = `province-rank-clip-${code}`;
 
               return (
                 <g key={code}>
+                  <defs>
+                    <clipPath id={clipId}>
+                      <path d={d} />
+                    </clipPath>
+                  </defs>
                   <path
                     d={d}
                     fill={data.color}
@@ -206,44 +202,61 @@ export default function ProvinceHousePrices() {
                     onMouseLeave={handleMouseLeave}
                     onClick={() => setSelected(code)}
                   />
-                  <text
-                    x={centerX}
-                    y={centerY}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    className="font-serif select-none pointer-events-none"
-                    style={{
-                      fontSize: `${numberSize * 1.06}px`,
-                      fill: "rgba(255,255,255,0.18)",
-                      opacity: numberOpacity,
-                      fontWeight: 700,
-                      letterSpacing: "0.02em",
-                    }}
-                    transform={`translate(${centerX + 2} ${centerY + 2}) rotate(${numberTilt}) translate(${-centerX} ${-centerY})`}
+                  <g
+                    clipPath={`url(#${clipId})`}
+                    className="pointer-events-none select-none"
                   >
-                    {data.rank}
-                  </text>
-                  <text
-                    x={centerX}
-                    y={centerY}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    className="font-serif select-none pointer-events-none"
-                    style={{
-                      fontSize: `${numberSize}px`,
-                      fill: "url(#province-rank-fill)",
-                      opacity: numberOpacity,
-                      fontWeight: 800,
-                      stroke: "rgba(77, 44, 20, 0.35)",
-                      strokeWidth: 1.8,
-                      paintOrder: "stroke fill",
-                      filter: "url(#province-rank-glow)",
-                      letterSpacing: "0.01em",
-                    }}
-                    transform={`rotate(${numberTilt} ${centerX} ${centerY})`}
-                  >
-                    {data.rank}
-                  </text>
+                    <text
+                      x={centerX + 2.4}
+                      y={centerY + 2.4}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      className="font-serif"
+                      style={{
+                        fontSize: `${numberSize * 1.04}px`,
+                        fill: "rgba(45, 20, 6, 0.34)",
+                        opacity: numberOpacity,
+                        fontWeight: 800,
+                        letterSpacing: "0.015em",
+                      }}
+                    >
+                      {data.rank}
+                    </text>
+                    <text
+                      x={centerX}
+                      y={centerY}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      className="font-serif"
+                      style={{
+                        fontSize: `${numberSize}px`,
+                        fill: "url(#province-rank-fill)",
+                        opacity: numberOpacity,
+                        fontWeight: 900,
+                        stroke: "rgba(74, 36, 16, 0.44)",
+                        strokeWidth: 2.6,
+                        paintOrder: "stroke fill",
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      {data.rank}
+                    </text>
+                    <text
+                      x={centerX - 0.8}
+                      y={centerY - 0.8}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      className="font-serif"
+                      style={{
+                        fontSize: `${numberSize * 0.96}px`,
+                        fill: "rgba(255, 255, 255, 0.34)",
+                        opacity: numberOpacity,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {data.rank}
+                    </text>
+                  </g>
                 </g>
               );
             })}
