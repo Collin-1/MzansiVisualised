@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA Grocery Basket — Through the Years</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f0e;
+    --surface: #161a18;
+    --surface2: #1e2420;
+    --border: #2a332e;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --green: #4caf82;
+    --red: #e05c5c;
+    --text: #e8ede9;
+    --muted: #7a9085;
+    --accent: #3d7a5e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 10%, rgba(201,168,76,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(76,175,130,0.05) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  header { padding: 40px 0 28px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .flag-stripe {
+    width: 40px; height: 6px;
+    background: linear-gradient(90deg, #007A4D 33%, #FFB81C 33% 66%, #DE3831 66%);
+    border-radius: 3px; margin-bottom: 12px;
+  }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 48px); font-weight: 900; line-height: 1.1; }
+  h1 span { color: var(--gold); }
+  .subtitle { color: var(--muted); font-size: 13px; font-weight: 300; margin-top: 8px; }
+
+  .controls-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;
+  }
+  @media (max-width: 700px) { .controls-row { grid-template-columns: 1fr; } }
+  .control-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 28px;
+  }
+  .control-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
+  .budget-amount { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .budget-amount sup { font-size: 18px; vertical-align: super; }
+
+  input[type=range] {
+    width: 100%; height: 4px; -webkit-appearance: none;
+    background: var(--border); border-radius: 2px; outline: none; margin-top: 14px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--gold); cursor: pointer;
+    box-shadow: 0 0 12px rgba(201,168,76,0.5); transition: transform 0.1s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .slider-range { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+  .year-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .year-tab {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 18px; border-radius: 100px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    transition: all 0.2s; user-select: none;
+  }
+  .year-tab:hover { border-color: var(--gold); color: var(--text); }
+  .year-tab.active { background: var(--gold); border-color: var(--gold); color: #0d0f0e; font-weight: 600; }
+
+  .main-grid { display: grid; grid-template-columns: 1fr 370px; gap: 24px; align-items: start; }
+  @media (max-width: 920px) { .main-grid { grid-template-columns: 1fr; } }
+
+  .section-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .count-pill {
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 2px 9px; border-radius: 100px; font-size: 10px;
+  }
+
+  .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; }
+
+  .item-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 12px 12px; cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    position: relative; overflow: hidden; user-select: none;
+  }
+  .item-card::after {
+    content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.2s;
+    background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.09), transparent 70%);
+    pointer-events: none;
+  }
+  .item-card:hover:not(.cant-afford) { border-color: var(--accent); transform: translateY(-2px); }
+  .item-card:hover:not(.cant-afford)::after { opacity: 1; }
+  .item-card.in-basket { border-color: var(--gold); background: var(--surface2); }
+  .item-card.in-basket::after { opacity: 1; }
+  .item-card.cant-afford { opacity: 0.28; cursor: default; }
+
+  .ptag {
+    display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 1px;
+    padding: 2px 7px; border-radius: 100px; font-weight: 600; margin-bottom: 8px;
+  }
+  .ptag.essential { background: rgba(76,175,130,0.18); color: var(--green); }
+  .ptag.standard  { background: rgba(201,168,76,0.14); color: var(--gold); }
+  .ptag.extra     { background: rgba(122,144,133,0.14); color: var(--muted); }
+
+  .item-emoji { font-size: 24px; display: block; margin-bottom: 5px; }
+  .item-name  { font-size: 12px; font-weight: 500; }
+  .item-unit  { font-size: 10px; color: var(--muted); margin-bottom: 5px; }
+  .item-price { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--gold); }
+
+  .qty-badge {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--gold); color: #0d0f0e; font-size: 10px; font-weight: 700;
+    width: 19px; height: 19px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    animation: badgePop 0.18s ease;
+  }
+  @keyframes badgePop { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+
+  /* BASKET */
+  .basket-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; position: sticky; top: 20px;
+  }
+  .basket-head {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 14px;
+  }
+  .basket-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .item-count-lbl { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+  .auto-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(76,175,130,0.1); border: 1px solid rgba(76,175,130,0.25);
+    color: var(--green); font-size: 10px; padding: 3px 10px; border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .auto-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+  .basket-scroll { max-height: 360px; overflow-y: auto; padding-right: 2px; }
+  .basket-scroll::-webkit-scrollbar { width: 3px; }
+  .basket-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .bitem {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; background: var(--surface2); border-radius: 8px; margin-bottom: 6px;
+    animation: bSlide 0.2s ease;
+  }
+  @keyframes bSlide { from{opacity:0;transform:translateX(8px)} to{opacity:1;transform:translateX(0)} }
+  .bitem-emoji { font-size: 17px; }
+  .bitem-info  { flex: 1; min-width: 0; }
+  .bitem-name  { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bitem-sub   { font-size: 10px; color: var(--muted); }
+  .bitem-cost  { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+  .qty-ctrl    { display: flex; align-items: center; gap: 3px; margin-left: 5px; flex-shrink: 0; }
+  .qbtn {
+    background: var(--border); border: none; color: var(--text);
+    width: 19px; height: 19px; border-radius: 4px; cursor: pointer;
+    font-size: 13px; display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+  }
+  .qbtn:hover { background: var(--accent); }
+  .qnum { font-size: 11px; font-weight: 600; min-width: 15px; text-align: center; }
+
+  .basket-empty { text-align: center; padding: 28px 0; color: var(--muted); font-size: 13px; }
+  .basket-empty span { display: block; font-size: 30px; margin-bottom: 8px; }
+
+  .totals { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px; }
+  .trow { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .tlbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .tval-big  { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+  .tval-rem  { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .tval-rem.ok   { color: var(--green); }
+  .tval-rem.tight{ color: var(--gold); }
+  .tval-rem.over { color: var(--red); }
+
+  .pbar-wrap { background: var(--border); border-radius: 3px; height: 5px; overflow: hidden; margin: 8px 0 12px; }
+  .pbar { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  .pbar.ok   { background: linear-gradient(90deg, var(--green), var(--gold)); }
+  .pbar.over { background: var(--red); }
+
+  .refill-btn {
+    width: 100%; background: none; border: 1px solid var(--border);
+    color: var(--muted); padding: 7px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.2s;
+  }
+  .refill-btn:hover { border-color: var(--green); color: var(--green); }
+
+  /* CHART */
+  .chart-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px; margin-top: 20px;
+  }
+  .chart-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 14px; }
+  .bar-row { display: flex; align-items: flex-end; gap: 5px; height: 100px; }
+  .bc { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 100%; justify-content: flex-end; }
+  .bc-bar {
+    width: 100%; border-radius: 3px 3px 0 0;
+    transition: height 0.5s cubic-bezier(0.34,1.4,0.64,1);
+    position: relative;
+  }
+  .bc-bar:hover .bc-tt { opacity: 1; }
+  .bc-tt {
+    position: absolute; bottom: calc(100% + 5px); left: 50%; transform: translateX(-50%);
+    background: #0d0f0e; border: 1px solid var(--border); color: var(--gold-light);
+    font-size: 10px; padding: 4px 8px; border-radius: 5px; white-space: nowrap;
+    pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 10;
+  }
+  .bc-yr { font-size: 9px; color: var(--muted); }
+
+  .stats-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .stat { }
+  .stat-lbl { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .stat-val { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; }
+  .stat-val.bad  { color: var(--red); }
+  .stat-val.good { color: var(--green); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="flag-stripe"></div>
+    <h1>The South African <span>Grocery Basket</span></h1>
+    <p class="subtitle">Move the budget slider or switch years — the basket fills automatically with a typical SA household shop.</p>
+  </header>
+
+  <div class="controls-row">
+    <div class="control-panel">
+      <div class="control-label">Monthly Grocery Budget</div>
+      <div class="budget-amount"><sup>R</sup><span id="budgetDisplay">500</span></div>
+      <input type="range" id="budgetSlider" min="50" max="5000" step="50" value="500">
+      <div class="slider-range"><span>R50</span><span>R5 000</span></div>
+    </div>
+    <div class="control-panel" style="display:flex;flex-direction:column;justify-content:center;gap:12px;">
+      <div class="control-label">Select Year</div>
+      <div class="year-tabs" id="yearTabs"></div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="section-label">
+        All Items
+        <span class="count-pill" id="affordCount">—</span>
+      </div>
+      <div class="items-grid" id="itemsGrid"></div>
+
+      <div class="chart-box">
+        <div class="chart-lbl">Basket Cost Across All Years</div>
+        <div class="bar-row" id="barRow"></div>
+        <div class="stats-row" id="statsRow"></div>
+      </div>
+    </div>
+
+    <div class="basket-panel">
+      <div class="basket-head">
+        <span style="font-size:22px">🛒</span>
+        <span class="basket-title">My Basket</span>
+        <span class="item-count-lbl" id="itemCountLbl">0 items</span>
+      </div>
+      <div class="auto-pill"><div class="dot"></div> Auto-filled · typical SA household</div>
+      <div id="basketBody"></div>
+      <div class="totals" id="totalsBlock" style="display:none">
+        <div class="trow">
+          <span class="tlbl">Total</span>
+          <span class="tval-big" id="totalVal">R0</span>
+        </div>
+        <div class="trow">
+          <span class="tlbl">Remaining</span>
+          <span class="tval-rem ok" id="remVal">R0</span>
+        </div>
+        <div class="pbar-wrap"><div class="pbar ok" id="pbar" style="width:0%"></div></div>
+        <button class="refill-btn" onclick="refill()">↺ Re-fill automatically</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const YEARS = [1995, 2000, 2005, 2010, 2015, 2020, 2023, 2025];
+
+// priority 1 = essential (buy first, multiple units OK)
+// priority 2 = standard  (once essentials covered)
+// priority 3 = extra     (nice to have)
+// typicalQty = monthly units a household buys
+const ITEMS = [
+  {id:'maize',        emoji:'🌽', name:'Maize Meal',       unit:'5kg bag',    priority:1, typicalQty:2,
+   prices:{1995:4.50, 2000:6.20, 2005:10.50, 2010:19.99, 2015:35.99, 2020:49.99, 2023:64.99, 2025:72.00}},
+  {id:'bread',        emoji:'🍞', name:'White Bread',      unit:'700g loaf',  priority:1, typicalQty:4,
+   prices:{1995:1.80, 2000:2.90, 2005:4.20, 2010:7.50, 2015:11.50, 2020:14.99, 2023:19.99, 2025:22.50}},
+  {id:'oil',          emoji:'🫙', name:'Sunflower Oil',    unit:'750ml',      priority:1, typicalQty:2,
+   prices:{1995:2.80, 2000:4.50, 2005:7.50, 2010:14.99, 2015:19.99, 2020:25.99, 2023:29.99, 2025:28.99}},
+  {id:'milk',         emoji:'🥛', name:'Full Cream Milk',  unit:'2 litre',    priority:1, typicalQty:3,
+   prices:{1995:2.50, 2000:3.80, 2005:5.80, 2010:9.99, 2015:15.50, 2020:21.99, 2023:28.99, 2025:32.00}},
+  {id:'eggs',         emoji:'🥚', name:'Eggs',             unit:'18 pack',    priority:1, typicalQty:2,
+   prices:{1995:2.20, 2000:4.00, 2005:7.50, 2010:14.99, 2015:22.99, 2020:36.99, 2023:48.99, 2025:44.99}},
+  {id:'sugar',        emoji:'🍬', name:'White Sugar',      unit:'2.5kg bag',  priority:1, typicalQty:1,
+   prices:{1995:3.50, 2000:5.50, 2005:8.00, 2010:16.99, 2015:22.99, 2020:28.99, 2023:34.99, 2025:37.99}},
+  {id:'salt',         emoji:'🧂', name:'Table Salt',       unit:'1kg',        priority:1, typicalQty:1,
+   prices:{1995:0.80, 2000:1.20, 2005:2.00, 2010:3.99, 2015:5.99, 2020:7.99, 2023:9.99, 2025:10.99}},
+  {id:'beans',        emoji:'🫘', name:'Dried Beans',      unit:'500g bag',   priority:2, typicalQty:2,
+   prices:{1995:1.80, 2000:3.00, 2005:5.50, 2010:11.99, 2015:17.99, 2020:21.99, 2023:26.99, 2025:29.99}},
+  {id:'potatoes',     emoji:'🥔', name:'Potatoes',         unit:'per kg',     priority:2, typicalQty:3,
+   prices:{1995:1.20, 2000:2.00, 2005:3.50, 2010:6.99, 2015:9.99, 2020:12.99, 2023:15.99, 2025:17.99}},
+  {id:'onions',       emoji:'🧅', name:'Onions',           unit:'per kg',     priority:2, typicalQty:2,
+   prices:{1995:1.00, 2000:1.80, 2005:3.00, 2010:5.99, 2015:8.99, 2020:9.99, 2023:13.99, 2025:15.99}},
+  {id:'rice',         emoji:'🍚', name:'White Rice',       unit:'2kg bag',    priority:2, typicalQty:2,
+   prices:{1995:3.20, 2000:5.00, 2005:7.50, 2010:14.99, 2015:22.99, 2020:29.99, 2023:36.99, 2025:39.99}},
+  {id:'chicken',      emoji:'🍗', name:'Chicken Portions', unit:'2kg IQF',    priority:2, typicalQty:2,
+   prices:{1995:8.00, 2000:12.50, 2005:20.00, 2010:42.99, 2015:64.99, 2020:79.99, 2023:99.99, 2025:119.99}},
+  {id:'margarine',    emoji:'🟡', name:'Margarine',        unit:'500g',       priority:2, typicalQty:1,
+   prices:{1995:2.50, 2000:4.00, 2005:8.00, 2010:16.99, 2015:25.99, 2020:34.99, 2023:38.99, 2025:42.99}},
+  {id:'tea',          emoji:'🍵', name:'Ceylon Tea',       unit:'250g',       priority:2, typicalQty:1,
+   prices:{1995:3.00, 2000:5.50, 2005:9.00, 2010:17.99, 2015:23.99, 2020:32.99, 2023:37.99, 2025:41.99}},
+  {id:'tomatoes',     emoji:'🍅', name:'Tomatoes',         unit:'per kg',     priority:2, typicalQty:2,
+   prices:{1995:1.50, 2000:2.50, 2005:4.00, 2010:8.99, 2015:12.99, 2020:15.99, 2023:19.99, 2025:23.99}},
+  {id:'peanutbutter', emoji:'🥜', name:'Peanut Butter',    unit:'400g jar',   priority:2, typicalQty:1,
+   prices:{1995:2.80, 2000:5.00, 2005:8.50, 2010:16.99, 2015:22.99, 2020:32.99, 2023:36.99, 2025:39.99}},
+  {id:'mince',        emoji:'🥩', name:'Beef Mince',       unit:'per kg',     priority:3, typicalQty:1,
+   prices:{1995:7.00, 2000:12.00, 2005:22.00, 2010:45.00, 2015:65.00, 2020:89.99, 2023:102.95, 2025:126.79}},
+  {id:'cheese',       emoji:'🧀', name:'Cheddar Cheese',   unit:'per kg',     priority:3, typicalQty:1,
+   prices:{1995:12.00, 2000:20.00, 2005:32.00, 2010:59.99, 2015:89.99, 2020:109.99, 2023:139.99, 2025:159.99}},
+  {id:'coffee',       emoji:'☕', name:'Instant Coffee',   unit:'250g',       priority:3, typicalQty:1,
+   prices:{1995:7.00, 2000:12.00, 2005:18.00, 2010:38.99, 2015:59.99, 2020:79.99, 2023:99.99, 2025:109.99}},
+  {id:'butter',       emoji:'🧈', name:'Butter',           unit:'500g',       priority:3, typicalQty:1,
+   prices:{1995:5.00, 2000:9.00, 2005:15.00, 2010:32.99, 2015:49.99, 2020:59.99, 2023:69.99, 2025:74.99}},
+  {id:'cabbage',      emoji:'🥬', name:'Cabbage',          unit:'per head',   priority:3, typicalQty:2,
+   prices:{1995:1.00, 2000:2.00, 2005:3.50, 2010:6.99, 2015:9.99, 2020:11.99, 2023:14.99, 2025:17.99}},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let selectedYear = 2025;
+let budget = 500;
+let basket = {};
+
+// ── AUTO-FILL ─────────────────────────────────────────────────────────────────
+// Greedy priority-based fill simulating a typical SA household:
+// 1→ 1× each essential  2→ top up essentials to typicalQty
+// 3→ 1× each standard   4→ top up standard to typicalQty
+// 5→ extras (1× each)   6→ surplus goes to extra units of priority-1/2
+function autoFill() {
+  const b = {};
+  let rem = budget;
+
+  function tryAdd(id, maxQty) {
+    const it = ITEMS.find(i => i.id === id);
+    const p = it.prices[selectedYear];
+    while ((b[id] || 0) < maxQty && p <= rem) {
+      b[id] = (b[id] || 0) + 1;
+      rem -= p;
+    }
+  }
+
+  // Phase 1 & 2: essentials up to typicalQty
+  for (const it of ITEMS.filter(i => i.priority === 1)) tryAdd(it.id, it.typicalQty);
+  // Phase 3 & 4: standard up to typicalQty
+  for (const it of ITEMS.filter(i => i.priority === 2)) tryAdd(it.id, it.typicalQty);
+  // Phase 5: extras × 1
+  for (const it of ITEMS.filter(i => i.priority === 3)) tryAdd(it.id, 1);
+  // Phase 6: spend surplus on more essentials & standards
+  for (const it of ITEMS.filter(i => i.priority <= 2)) tryAdd(it.id, it.typicalQty * 3);
+
+  basket = b;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  renderYearTabs();
+  renderItems();
+  renderBasket();
+  renderChart();
+}
+
+function renderYearTabs() {
+  document.getElementById('yearTabs').innerHTML = YEARS.map(y =>
+    `<button class="year-tab ${y === selectedYear ? 'active' : ''}" onclick="selectYear(${y})">${y}</button>`
+  ).join('');
+}
+
+function renderItems() {
+  const affordable = ITEMS.filter(i => i.prices[selectedYear] <= budget).length;
+  document.getElementById('affordCount').textContent = `${affordable}/${ITEMS.length} affordable`;
+
+  document.getElementById('itemsGrid').innerHTML = ITEMS.map(item => {
+    const price = item.prices[selectedYear];
+    const qty   = basket[item.id] || 0;
+    const ok    = price <= budget;
+    const pLabel = item.priority === 1 ? 'essential' : item.priority === 2 ? 'standard' : 'extra';
+
+    return `<div class="item-card ${qty > 0 ? 'in-basket' : ''} ${!ok ? 'cant-afford' : ''}"
+         onclick="${ok ? `manualToggle('${item.id}')` : ''}">
+      <span class="ptag ${pLabel}">${pLabel}</span>
+      ${qty > 0 ? `<div class="qty-badge">${qty}</div>` : ''}
+      <span class="item-emoji">${item.emoji}</span>
+      <div class="item-name">${item.name}</div>
+      <div class="item-unit">${item.unit}</div>
+      <div class="item-price">R${price.toFixed(2)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderBasket() {
+  const bodyEl    = document.getElementById('basketBody');
+  const totalsEl  = document.getElementById('totalsBlock');
+  const entries   = Object.entries(basket).filter(([_,q]) => q > 0);
+
+  const totalItems = entries.reduce((s,[_,q]) => s + q, 0);
+  document.getElementById('itemCountLbl').textContent = totalItems === 0 ? '0 items' : `${totalItems} items`;
+
+  if (entries.length === 0) {
+    bodyEl.innerHTML = `<div class="basket-empty"><span>🛍️</span>Increase budget to start filling</div>`;
+    totalsEl.style.display = 'none';
+    return;
+  }
+  totalsEl.style.display = 'block';
+
+  // Sort: priority ASC then name
+  entries.sort(([a],[b]) => {
+    const ia = ITEMS.find(i=>i.id===a), ib = ITEMS.find(i=>i.id===b);
+    return ia.priority - ib.priority || ia.name.localeCompare(ib.name);
+  });
+
+  bodyEl.innerHTML = `<div class="basket-scroll">` +
+    entries.map(([id,qty]) => {
+      const it = ITEMS.find(i=>i.id===id);
+      const cost = it.prices[selectedYear] * qty;
+      return `<div class="bitem">
+        <span class="bitem-emoji">${it.emoji}</span>
+        <div class="bitem-info">
+          <div class="bitem-name">${it.name}</div>
+          <div class="bitem-sub">${qty}× @ R${it.prices[selectedYear].toFixed(2)}</div>
+        </div>
+        <span class="bitem-cost">R${cost.toFixed(2)}</span>
+        <div class="qty-ctrl">
+          <button class="qbtn" onclick="adj('${id}',-1)">−</button>
+          <span class="qnum">${qty}</span>
+          <button class="qbtn" onclick="adj('${id}',1)">+</button>
+        </div>
+      </div>`;
+    }).join('') + `</div>`;
+
+  const total = getTotal();
+  const rem   = budget - total;
+  const pct   = Math.min((total / budget) * 100, 100);
+
+  document.getElementById('totalVal').textContent = `R${total.toFixed(2)}`;
+  const remEl = document.getElementById('remVal');
+  remEl.textContent  = rem >= 0 ? `R${rem.toFixed(2)}` : `−R${Math.abs(rem).toFixed(2)}`;
+  remEl.className    = 'tval-rem ' + (rem < 0 ? 'over' : rem < budget * 0.05 ? 'tight' : 'ok');
+
+  const pb = document.getElementById('pbar');
+  pb.style.width = pct + '%';
+  pb.className   = 'pbar ' + (rem < 0 ? 'over' : 'ok');
+}
+
+function renderChart() {
+  const entries = Object.entries(basket).filter(([_,q])=>q>0).map(([id,qty])=>({id,qty}));
+  const isDefault = entries.length === 0;
+  const ref = isDefault
+    ? [{id:'maize',qty:1},{id:'bread',qty:2},{id:'milk',qty:1},{id:'eggs',qty:1},{id:'oil',qty:1},{id:'sugar',qty:1}]
+    : entries;
+
+  const totals = YEARS.map(y => ({
+    year: y,
+    total: ref.reduce((s,{id,qty}) => { const it=ITEMS.find(i=>i.id===id); return s+(it?it.prices[y]*qty:0); }, 0)
+  }));
+
+  const maxV = Math.max(...totals.map(t=>t.total));
+
+  document.getElementById('barRow').innerHTML = totals.map(({year,total}) => {
+    const h   = (total / maxV) * 100;
+    const col = year === selectedYear ? 'var(--gold)' : 'var(--accent)';
+    return `<div class="bc">
+      <div class="bc-bar" style="height:${h}%;background:${col}">
+        <div class="bc-tt">R${total.toFixed(0)}</div>
+      </div>
+      <div class="bc-yr">${year}</div>
+    </div>`;
+  }).join('');
+
+  const first  = totals[0].total;
+  const active = totals.find(t=>t.year===selectedYear)?.total || 0;
+  const rise30 = ((totals[totals.length-1].total - first) / first * 100).toFixed(0);
+  const riseAct= ((active - first) / first * 100).toFixed(0);
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat"><div class="stat-lbl">1995 cost</div><div class="stat-val">R${first.toFixed(0)}</div></div>
+    <div class="stat"><div class="stat-lbl">${selectedYear} cost</div><div class="stat-val">R${active.toFixed(0)}</div></div>
+    <div class="stat"><div class="stat-lbl">vs 1995</div><div class="stat-val bad">+${riseAct}%</div></div>
+    <div class="stat"><div class="stat-lbl">30-yr rise</div><div class="stat-val bad">+${rise30}%</div></div>`;
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function getTotal() {
+  return Object.entries(basket).reduce((s,[id,qty]) => {
+    const it = ITEMS.find(i=>i.id===id);
+    return s + it.prices[selectedYear] * qty;
+  }, 0);
+}
+
+function selectYear(y) {
+  selectedYear = y;
+  autoFill();
+  render();
+}
+
+function refill() {
+  autoFill();
+  render();
+}
+
+function manualToggle(id) {
+  if (basket[id]) {
+    delete basket[id];
+  } else {
+    const it  = ITEMS.find(i=>i.id===id);
+    const rem = budget - getTotal();
+    if (it.prices[selectedYear] <= rem) basket[id] = 1;
+  }
+  renderItems();
+  renderBasket();
+  renderChart();
+}
+
+function adj(id, delta) {
+  const it  = ITEMS.find(i=>i.id===id);
+  const cur = basket[id] || 0;
+  const nxt = cur + delta;
+  if (nxt <= 0) { delete basket[id]; }
+  else if (delta > 0) {
+    const rem = budget - getTotal();
+    if (it.prices[selectedYear] <= rem) basket[id] = nxt;
+  } else {
+    basket[id] = nxt;
+  }
+  renderItems();
+  renderBasket();
+  renderChart();
+}
+
+// ── SLIDER ────────────────────────────────────────────────────────────────────
+document.getElementById('budgetSlider').addEventListener('input', function() {
+  budget = parseInt(this.value);
+  document.getElementById('budgetDisplay').textContent = budget.toLocaleString();
+  autoFill();
+  render();
+});
+
+// ── BOOT ──────────────────────────────────────────────────────────────────────
+autoFill();
+render();
+</script>
+</body>
+</html>
