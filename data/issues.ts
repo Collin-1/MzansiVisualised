@@ -49,6 +49,16 @@ export const issues: Issue[] = [
     component: "LoadSheddingHistory",
     featured: false,
   },
+  {
+    slug: "grocery-basket-affordability",
+    number: 3,
+    title: "How far does your grocery budget go?",
+    deck: "Track what a typical South African household could put in a monthly grocery basket as prices and budgets shift across the years.",
+    publishedAt: "2026-03-27",
+    tags: ["economy", "people"],
+    component: "GroceryBasketAffordability",
+    featured: false,
+  },
   // ── Add future issues below ────────────────────────────────────────────────
   // {
   //   slug:        'gdp-by-province',
