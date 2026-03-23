@@ -11,8 +11,36 @@ import {
 import { cx } from "@/lib/utils";
 
 type BasketState = Record<string, number>;
-
 type Tier = 1 | 2 | 3;
+
+const TIER_THEME: Record<
+  Tier,
+  {
+    panel: string;
+    selectedCard: string;
+    price: string;
+    marker: string;
+  }
+> = {
+  1: {
+    panel: "border-[#C4562A]/35 bg-[#FFF5EE]",
+    selectedCard: "border-[#C4562A]/45 bg-[#FDE9DD]",
+    price: "text-[#B84020]",
+    marker: "#C4562A",
+  },
+  2: {
+    panel: "border-[#D4904A]/35 bg-[#FFF8EE]",
+    selectedCard: "border-[#D4904A]/45 bg-[#FCEFD8]",
+    price: "text-[#C87040]",
+    marker: "#D4904A",
+  },
+  3: {
+    panel: "border-[#E8C88A]/45 bg-[#FFFDF7]",
+    selectedCard: "border-[#E8C88A]/55 bg-[#FCF5E6]",
+    price: "text-[#C09A4E]",
+    marker: "#E8C88A",
+  },
+};
 
 function currency(value: number): string {
   return `R${value.toLocaleString("en-ZA", {
@@ -83,35 +111,6 @@ function tierLabel(priority: Tier): string {
   if (priority === 1) return "Essentials first";
   if (priority === 2) return "Typical add-ons";
   return "Stretch items";
-}
-
-function tierStyles(priority: Tier): {
-  panel: string;
-  chip: string;
-  itemActive: string;
-} {
-  if (priority === 1) {
-    return {
-      panel:
-        "border-[#2f6a4e]/35 bg-[linear-gradient(160deg,rgba(47,106,78,0.16),rgba(248,251,248,0.96))]",
-      chip: "bg-[#2f6a4e]/15 text-[#2f6a4e]",
-      itemActive: "border-[#2f6a4e]/45 bg-[#2f6a4e]/12",
-    };
-  }
-  if (priority === 2) {
-    return {
-      panel:
-        "border-[#13795b]/30 bg-[linear-gradient(160deg,rgba(19,121,91,0.14),rgba(248,251,248,0.96))]",
-      chip: "bg-brand-gold/14 text-brand-gold",
-      itemActive: "border-brand-gold/45 bg-brand-gold/14",
-    };
-  }
-  return {
-    panel:
-      "border-[#c4562a]/30 bg-[linear-gradient(160deg,rgba(196,86,42,0.13),rgba(248,251,248,0.96))]",
-    chip: "bg-[#c4562a]/14 text-[#c4562a]",
-    itemActive: "border-[#c4562a]/45 bg-[#c4562a]/12",
-  };
 }
 
 export default function GroceryBasketAffordability() {
@@ -251,9 +250,8 @@ export default function GroceryBasketAffordability() {
   }
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-brand-bark/25 bg-[radial-gradient(circle_at_0%_0%,rgba(19,121,91,0.14),transparent_36%),radial-gradient(circle_at_100%_100%,rgba(196,86,42,0.14),transparent_34%),linear-gradient(160deg,#f8fbf8_0%,#ebefea_100%)] text-brand-bark shadow-[0_22px_38px_rgba(37,62,47,0.13)]">
-      <div className="h-1.5 w-full bg-[linear-gradient(90deg,#2f6a4e_0%,#13795b_50%,#c4562a_100%)]" />
-      <div className="border-b border-brand-bark/20 p-5 md:p-6">
+    <section className="overflow-hidden rounded-2xl border border-neutral-200 bg-white text-brand-bark shadow-sm">
+      <div className="border-b border-neutral-100 bg-[linear-gradient(145deg,#ffffff_0%,#f9f5ef_100%)] p-5 md:p-6">
         <p className="mb-1 text-[11px] uppercase tracking-[0.14em] text-brand-ash">
           Issue 003
         </p>
@@ -261,19 +259,18 @@ export default function GroceryBasketAffordability() {
           SA Grocery Basket Simulator
         </h2>
         <p className="mt-2 max-w-3xl text-sm text-brand-ash">
-          Different mode: build-by-tier. As you change year, budget, and price
-          pressure, the model auto-fills essentials first, then expands the
-          basket. You can still manually tweak quantities to test your own
-          strategy.
+          Same data engine, bolder color language: warm tier tones inspired by
+          the province house-prices dashboard. Essentials lock in first, then
+          the basket expands as affordability improves.
         </p>
       </div>
 
-      <div className="grid gap-4 border-b border-brand-bark/20 p-5 md:grid-cols-3 md:p-6">
-        <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(19,121,91,0.18),rgba(248,251,248,0.92))] p-4">
+      <div className="grid gap-4 border-b border-neutral-100 p-5 md:grid-cols-3 md:p-6">
+        <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-[0_10px_22px_rgba(186,150,102,0.08)]">
           <p className="text-[11px] uppercase tracking-[0.12em] text-brand-ash">
             Budget
           </p>
-          <p className="font-serif text-3xl text-brand-gold">
+          <p className="font-serif text-3xl text-[#C4562A]">
             {currencyShort(budget)}
           </p>
           <input
@@ -283,7 +280,7 @@ export default function GroceryBasketAffordability() {
             step={50}
             value={budget}
             onChange={(e) => setBudget(Number(e.target.value))}
-            className="mt-3 w-full accent-brand-gold"
+            className="mt-3 w-full accent-[#C4562A]"
           />
           <div className="mt-1 flex justify-between text-[11px] text-brand-ash">
             <span>R50</span>
@@ -291,7 +288,7 @@ export default function GroceryBasketAffordability() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(19,121,91,0.14),rgba(248,251,248,0.95))] p-4">
+        <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-[0_10px_22px_rgba(186,150,102,0.08)]">
           <p className="mb-2 text-[11px] uppercase tracking-[0.12em] text-brand-ash">
             Year
           </p>
@@ -304,8 +301,8 @@ export default function GroceryBasketAffordability() {
                 className={cx(
                   "rounded-full border px-3 py-1 text-xs transition-colors",
                   selectedYear === year
-                    ? "border-brand-gold bg-brand-gold text-white shadow-sm"
-                    : "border-brand-bark/25 bg-white/80 text-brand-ash hover:border-brand-gold/40 hover:text-brand-bark",
+                    ? "border-[#C4562A] bg-[#C4562A] text-white"
+                    : "border-neutral-200 bg-[#FCFBF8] text-brand-ash hover:border-[#D4904A] hover:text-brand-bark",
                 )}
               >
                 {year}
@@ -314,11 +311,11 @@ export default function GroceryBasketAffordability() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(196,86,42,0.15),rgba(248,251,248,0.95))] p-4">
+        <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-[0_10px_22px_rgba(186,150,102,0.08)]">
           <p className="text-[11px] uppercase tracking-[0.12em] text-brand-ash">
             Price pressure
           </p>
-          <p className="font-serif text-3xl text-brand-gold">
+          <p className="font-serif text-3xl text-[#C4562A]">
             {priceShiftPct > 0 ? "+" : ""}
             {priceShiftPct}%
           </p>
@@ -329,7 +326,7 @@ export default function GroceryBasketAffordability() {
             step={1}
             value={priceShiftPct}
             onChange={(e) => setPriceShiftPct(Number(e.target.value))}
-            className="mt-3 w-full accent-brand-gold"
+            className="mt-3 w-full accent-[#C4562A]"
           />
           <div className="mt-2 flex gap-2">
             {[-10, 0, 15].map((value) => (
@@ -340,8 +337,8 @@ export default function GroceryBasketAffordability() {
                 className={cx(
                   "rounded-full border px-2.5 py-1 text-[11px]",
                   priceShiftPct === value
-                    ? "border-brand-gold bg-brand-gold text-white shadow-sm"
-                    : "border-brand-bark/25 bg-white/85 text-brand-ash hover:border-brand-gold/35",
+                    ? "border-[#C4562A] bg-[#C4562A] text-white"
+                    : "border-neutral-200 bg-[#FCFBF8] text-brand-ash hover:border-[#D4904A]",
                 )}
               >
                 {value > 0 ? "+" : ""}
@@ -352,9 +349,9 @@ export default function GroceryBasketAffordability() {
         </div>
       </div>
 
-      <div className="grid gap-5 p-5 lg:grid-cols-[1.2fr_0.8fr] md:p-6">
+      <div className="grid gap-5 p-5 md:p-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-xl border border-brand-bark/25 bg-[linear-gradient(165deg,rgba(19,121,91,0.15),rgba(248,251,248,0.96))] p-4">
+          <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4">
             <div>
               <p className="text-[11px] uppercase tracking-[0.12em] text-brand-ash">
                 Live basket status
@@ -367,7 +364,7 @@ export default function GroceryBasketAffordability() {
             <button
               type="button"
               onClick={refillAuto}
-              className="rounded-full border border-brand-bark/25 bg-white/80 px-4 py-1.5 text-xs text-brand-bark transition-colors hover:border-brand-gold hover:text-brand-gold"
+              className="rounded-full border border-neutral-200 bg-[#FCFBF8] px-4 py-1.5 text-xs text-brand-bark transition-colors hover:border-[#C4562A] hover:text-[#C4562A]"
             >
               Refill auto
             </button>
@@ -377,11 +374,17 @@ export default function GroceryBasketAffordability() {
             {([1, 2, 3] as Tier[]).map((tier) => (
               <div
                 key={tier}
-                className={cx("rounded-xl border p-3", tierStyles(tier).panel)}
+                className={cx("rounded-xl border p-3", TIER_THEME[tier].panel)}
               >
-                <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-brand-ash">
-                  {tierLabel(tier)}
-                </p>
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-[11px] uppercase tracking-[0.1em] text-brand-ash">
+                    {tierLabel(tier)}
+                  </p>
+                  <span
+                    className="h-2.5 w-2.5 rounded-full"
+                    style={{ backgroundColor: TIER_THEME[tier].marker }}
+                  />
+                </div>
                 <div className="space-y-2">
                   {groupedItems[tier].map((item) => {
                     const qty = basket[item.id] ?? 0;
@@ -395,8 +398,8 @@ export default function GroceryBasketAffordability() {
                         className={cx(
                           "w-full rounded-lg border px-2.5 py-2 text-left transition-colors",
                           qty > 0
-                            ? tierStyles(tier).itemActive
-                            : "border-brand-bark/15 bg-white/75 hover:border-brand-bark/35",
+                            ? TIER_THEME[tier].selectedCard
+                            : "border-neutral-200 bg-white/85 hover:border-neutral-300",
                           !affordable && "cursor-not-allowed opacity-45",
                         )}
                       >
@@ -410,16 +413,16 @@ export default function GroceryBasketAffordability() {
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-serif text-base text-brand-gold">
+                            <p
+                              className={cx(
+                                "font-serif text-base",
+                                TIER_THEME[tier].price,
+                              )}
+                            >
                               {currency(item.price)}
                             </p>
                             {qty > 0 && (
-                              <p
-                                className={cx(
-                                  "text-[11px]",
-                                  tierStyles(tier).chip,
-                                )}
-                              >
+                              <p className="text-[11px] text-brand-ash">
                                 qty {qty}
                               </p>
                             )}
@@ -433,7 +436,7 @@ export default function GroceryBasketAffordability() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(196,86,42,0.12),rgba(248,251,248,0.95))] p-4">
+          <div className="rounded-xl border border-neutral-200 bg-white p-4">
             <p className="mb-3 text-[11px] uppercase tracking-[0.12em] text-brand-ash">
               Basket cost timeline
             </p>
@@ -449,13 +452,11 @@ export default function GroceryBasketAffordability() {
                     <div
                       className={cx(
                         "relative w-full rounded-t-sm transition-all",
-                        isActive
-                          ? "bg-[linear-gradient(180deg,#13795b_0%,#c4562a_100%)]"
-                          : "bg-[linear-gradient(180deg,rgba(19,121,91,0.7),rgba(95,109,99,0.8))]",
+                        isActive ? "bg-[#C4562A]" : "bg-[#D4A86A]",
                       )}
                       style={{ height: `${Math.max(4, h)}%` }}
                     >
-                      <span className="pointer-events-none absolute -top-7 left-1/2 hidden -translate-x-1/2 rounded border border-brand-bark/20 bg-white px-1.5 py-0.5 text-[10px] text-brand-bark group-hover:block">
+                      <span className="pointer-events-none absolute -top-7 left-1/2 hidden -translate-x-1/2 rounded border border-neutral-200 bg-white px-1.5 py-0.5 text-[10px] text-brand-bark group-hover:block">
                         {currencyShort(row.total)}
                       </span>
                     </div>
@@ -469,8 +470,8 @@ export default function GroceryBasketAffordability() {
           </div>
         </div>
 
-        <aside className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(175deg,rgba(19,121,91,0.12),rgba(248,251,248,0.96))] p-4 lg:sticky lg:top-4">
-          <div className="mb-3 border-b border-brand-bark/20 pb-3">
+        <aside className="rounded-xl border border-neutral-200 bg-white p-4 shadow-[0_16px_30px_rgba(153,110,64,0.08)] lg:sticky lg:top-4">
+          <div className="mb-3 border-b border-neutral-100 pb-3">
             <p className="font-serif text-2xl text-brand-bark">
               Basket Receipt
             </p>
@@ -481,20 +482,20 @@ export default function GroceryBasketAffordability() {
 
           <div className="max-h-[380px] space-y-2 overflow-y-auto pr-1">
             {basketEntries.length === 0 ? (
-              <p className="rounded-lg border border-brand-bark/15 bg-white/70 px-3 py-6 text-center text-sm text-brand-ash">
+              <p className="rounded-lg border border-neutral-200 bg-[#FFFEFC] px-3 py-6 text-center text-sm text-brand-ash">
                 Increase budget to populate the basket.
               </p>
             ) : (
               basketEntries.map((entry) => (
                 <div
                   key={entry.item.id}
-                  className="rounded-lg border border-brand-bark/20 bg-[linear-gradient(160deg,rgba(255,255,255,0.96),rgba(235,239,234,0.9))] px-3 py-2"
+                  className="rounded-lg border border-neutral-200 bg-[#FFFEFC] px-3 py-2"
                 >
                   <div className="mb-1 flex items-center justify-between gap-2">
                     <p className="text-sm font-medium text-brand-bark">
                       {entry.item.emoji} {entry.item.name}
                     </p>
-                    <p className="font-serif text-sm text-brand-gold">
+                    <p className="font-serif text-sm text-[#C4562A]">
                       {currency(entry.total)}
                     </p>
                   </div>
@@ -506,7 +507,7 @@ export default function GroceryBasketAffordability() {
                       <button
                         type="button"
                         onClick={() => adjustQty(entry.item.id, -1)}
-                        className="flex h-5 w-5 items-center justify-center rounded bg-brand-bark/15 text-xs text-brand-bark hover:bg-brand-bark/25"
+                        className="flex h-5 w-5 items-center justify-center rounded bg-[#F2EAE0] text-xs text-brand-bark hover:bg-[#E7D9C7]"
                       >
                         -
                       </button>
@@ -516,7 +517,7 @@ export default function GroceryBasketAffordability() {
                       <button
                         type="button"
                         onClick={() => adjustQty(entry.item.id, 1)}
-                        className="flex h-5 w-5 items-center justify-center rounded bg-brand-bark/15 text-xs text-brand-bark hover:bg-brand-bark/25"
+                        className="flex h-5 w-5 items-center justify-center rounded bg-[#F2EAE0] text-xs text-brand-bark hover:bg-[#E7D9C7]"
                       >
                         +
                       </button>
@@ -527,7 +528,7 @@ export default function GroceryBasketAffordability() {
             )}
           </div>
 
-          <div className="mt-3 border-t border-brand-bark/20 pt-3">
+          <div className="mt-3 border-t border-neutral-100 pt-3">
             <div className="mb-1 flex items-end justify-between">
               <span className="text-[11px] uppercase tracking-[0.1em] text-brand-ash">
                 Total
@@ -546,7 +547,7 @@ export default function GroceryBasketAffordability() {
                   remaining < 0
                     ? "text-[#c4562a]"
                     : remaining < budget * 0.08
-                      ? "text-brand-gold"
+                      ? "text-[#C87040]"
                       : "text-[#2f6a4e]",
                 )}
               >
@@ -555,13 +556,13 @@ export default function GroceryBasketAffordability() {
                   : `-${currency(Math.abs(remaining))}`}
               </span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded bg-brand-bark/15">
+            <div className="h-1.5 overflow-hidden rounded bg-[#EFE5DA]">
               <div
                 className={cx(
                   "h-full rounded",
                   remaining < 0
                     ? "bg-[#c4562a]"
-                    : "bg-[linear-gradient(90deg,#2f6a4e,#13795b)]",
+                    : "bg-[linear-gradient(90deg,#E8C88A,#D4904A,#C4562A)]",
                 )}
                 style={{
                   width: `${Math.min((basketTotal / budget) * 100, 100)}%`,
