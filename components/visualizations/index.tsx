@@ -30,6 +30,10 @@ export const VIZ_REGISTRY: Record<string, React.ComponentType> = {
   LoadSheddingHistory: dynamic(() => import("./LoadSheddingHistory"), {
     ssr: false,
   }),
+  GroceryBasketAffordability: dynamic(
+    () => import("./GroceryBasketAffordability"),
+    { ssr: false },
+  ),
   // Add future visualizations here:
   // GdpByProvince:   dynamic(() => import('./GdpByProvince'),   { ssr: false }),
   // UnemploymentMap: dynamic(() => import('./UnemploymentMap'), { ssr: false }),
