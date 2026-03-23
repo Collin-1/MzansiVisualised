@@ -85,6 +85,35 @@ function tierLabel(priority: Tier): string {
   return "Stretch items";
 }
 
+function tierStyles(priority: Tier): {
+  panel: string;
+  chip: string;
+  itemActive: string;
+} {
+  if (priority === 1) {
+    return {
+      panel:
+        "border-[#2f6a4e]/35 bg-[linear-gradient(160deg,rgba(47,106,78,0.16),rgba(248,251,248,0.96))]",
+      chip: "bg-[#2f6a4e]/15 text-[#2f6a4e]",
+      itemActive: "border-[#2f6a4e]/45 bg-[#2f6a4e]/12",
+    };
+  }
+  if (priority === 2) {
+    return {
+      panel:
+        "border-[#13795b]/30 bg-[linear-gradient(160deg,rgba(19,121,91,0.14),rgba(248,251,248,0.96))]",
+      chip: "bg-brand-gold/14 text-brand-gold",
+      itemActive: "border-brand-gold/45 bg-brand-gold/14",
+    };
+  }
+  return {
+    panel:
+      "border-[#c4562a]/30 bg-[linear-gradient(160deg,rgba(196,86,42,0.13),rgba(248,251,248,0.96))]",
+    chip: "bg-[#c4562a]/14 text-[#c4562a]",
+    itemActive: "border-[#c4562a]/45 bg-[#c4562a]/12",
+  };
+}
+
 export default function GroceryBasketAffordability() {
   const [selectedYear, setSelectedYear] = useState<number>(
     YEARS[YEARS.length - 1],
@@ -222,7 +251,8 @@ export default function GroceryBasketAffordability() {
   }
 
   return (
-    <section className="rounded-2xl border border-brand-bark/20 bg-brand-earth-2 text-brand-bark shadow-sm">
+    <section className="overflow-hidden rounded-2xl border border-brand-bark/25 bg-[radial-gradient(circle_at_0%_0%,rgba(19,121,91,0.14),transparent_36%),radial-gradient(circle_at_100%_100%,rgba(196,86,42,0.14),transparent_34%),linear-gradient(160deg,#f8fbf8_0%,#ebefea_100%)] text-brand-bark shadow-[0_22px_38px_rgba(37,62,47,0.13)]">
+      <div className="h-1.5 w-full bg-[linear-gradient(90deg,#2f6a4e_0%,#13795b_50%,#c4562a_100%)]" />
       <div className="border-b border-brand-bark/20 p-5 md:p-6">
         <p className="mb-1 text-[11px] uppercase tracking-[0.14em] text-brand-ash">
           Issue 003
@@ -239,7 +269,7 @@ export default function GroceryBasketAffordability() {
       </div>
 
       <div className="grid gap-4 border-b border-brand-bark/20 p-5 md:grid-cols-3 md:p-6">
-        <div className="rounded-xl border border-brand-bark/20 bg-brand-earth p-4">
+        <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(19,121,91,0.18),rgba(248,251,248,0.92))] p-4">
           <p className="text-[11px] uppercase tracking-[0.12em] text-brand-ash">
             Budget
           </p>
@@ -261,7 +291,7 @@ export default function GroceryBasketAffordability() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-brand-bark/20 bg-brand-earth p-4">
+        <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(19,121,91,0.14),rgba(248,251,248,0.95))] p-4">
           <p className="mb-2 text-[11px] uppercase tracking-[0.12em] text-brand-ash">
             Year
           </p>
@@ -274,8 +304,8 @@ export default function GroceryBasketAffordability() {
                 className={cx(
                   "rounded-full border px-3 py-1 text-xs transition-colors",
                   selectedYear === year
-                    ? "border-brand-gold bg-brand-gold text-white"
-                    : "border-brand-bark/25 bg-white/70 text-brand-ash hover:text-brand-bark",
+                    ? "border-brand-gold bg-brand-gold text-white shadow-sm"
+                    : "border-brand-bark/25 bg-white/80 text-brand-ash hover:border-brand-gold/40 hover:text-brand-bark",
                 )}
               >
                 {year}
@@ -284,7 +314,7 @@ export default function GroceryBasketAffordability() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-brand-bark/20 bg-brand-earth p-4">
+        <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(196,86,42,0.15),rgba(248,251,248,0.95))] p-4">
           <p className="text-[11px] uppercase tracking-[0.12em] text-brand-ash">
             Price pressure
           </p>
@@ -310,8 +340,8 @@ export default function GroceryBasketAffordability() {
                 className={cx(
                   "rounded-full border px-2.5 py-1 text-[11px]",
                   priceShiftPct === value
-                    ? "border-brand-gold bg-brand-gold text-white"
-                    : "border-brand-bark/25 bg-white/70 text-brand-ash",
+                    ? "border-brand-gold bg-brand-gold text-white shadow-sm"
+                    : "border-brand-bark/25 bg-white/85 text-brand-ash hover:border-brand-gold/35",
                 )}
               >
                 {value > 0 ? "+" : ""}
@@ -324,7 +354,7 @@ export default function GroceryBasketAffordability() {
 
       <div className="grid gap-5 p-5 lg:grid-cols-[1.2fr_0.8fr] md:p-6">
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-xl border border-brand-bark/20 bg-brand-earth p-4">
+          <div className="flex items-center justify-between rounded-xl border border-brand-bark/25 bg-[linear-gradient(165deg,rgba(19,121,91,0.15),rgba(248,251,248,0.96))] p-4">
             <div>
               <p className="text-[11px] uppercase tracking-[0.12em] text-brand-ash">
                 Live basket status
@@ -347,7 +377,7 @@ export default function GroceryBasketAffordability() {
             {([1, 2, 3] as Tier[]).map((tier) => (
               <div
                 key={tier}
-                className="rounded-xl border border-brand-bark/20 bg-brand-earth p-3"
+                className={cx("rounded-xl border p-3", tierStyles(tier).panel)}
               >
                 <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-brand-ash">
                   {tierLabel(tier)}
@@ -365,8 +395,8 @@ export default function GroceryBasketAffordability() {
                         className={cx(
                           "w-full rounded-lg border px-2.5 py-2 text-left transition-colors",
                           qty > 0
-                            ? "border-brand-gold/40 bg-brand-gold/10"
-                            : "border-brand-bark/15 bg-white/70 hover:border-brand-bark/35",
+                            ? tierStyles(tier).itemActive
+                            : "border-brand-bark/15 bg-white/75 hover:border-brand-bark/35",
                           !affordable && "cursor-not-allowed opacity-45",
                         )}
                       >
@@ -384,7 +414,12 @@ export default function GroceryBasketAffordability() {
                               {currency(item.price)}
                             </p>
                             {qty > 0 && (
-                              <p className="text-[11px] text-brand-ash">
+                              <p
+                                className={cx(
+                                  "text-[11px]",
+                                  tierStyles(tier).chip,
+                                )}
+                              >
                                 qty {qty}
                               </p>
                             )}
@@ -398,7 +433,7 @@ export default function GroceryBasketAffordability() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-brand-bark/20 bg-brand-earth p-4">
+          <div className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(160deg,rgba(196,86,42,0.12),rgba(248,251,248,0.95))] p-4">
             <p className="mb-3 text-[11px] uppercase tracking-[0.12em] text-brand-ash">
               Basket cost timeline
             </p>
@@ -414,7 +449,9 @@ export default function GroceryBasketAffordability() {
                     <div
                       className={cx(
                         "relative w-full rounded-t-sm transition-all",
-                        isActive ? "bg-brand-gold" : "bg-brand-bark/55",
+                        isActive
+                          ? "bg-[linear-gradient(180deg,#13795b_0%,#c4562a_100%)]"
+                          : "bg-[linear-gradient(180deg,rgba(19,121,91,0.7),rgba(95,109,99,0.8))]",
                       )}
                       style={{ height: `${Math.max(4, h)}%` }}
                     >
@@ -432,7 +469,7 @@ export default function GroceryBasketAffordability() {
           </div>
         </div>
 
-        <aside className="rounded-xl border border-brand-bark/20 bg-brand-earth p-4 lg:sticky lg:top-4">
+        <aside className="rounded-xl border border-brand-bark/25 bg-[linear-gradient(175deg,rgba(19,121,91,0.12),rgba(248,251,248,0.96))] p-4 lg:sticky lg:top-4">
           <div className="mb-3 border-b border-brand-bark/20 pb-3">
             <p className="font-serif text-2xl text-brand-bark">
               Basket Receipt
@@ -451,7 +488,7 @@ export default function GroceryBasketAffordability() {
               basketEntries.map((entry) => (
                 <div
                   key={entry.item.id}
-                  className="rounded-lg border border-brand-bark/15 bg-white/80 px-3 py-2"
+                  className="rounded-lg border border-brand-bark/20 bg-[linear-gradient(160deg,rgba(255,255,255,0.96),rgba(235,239,234,0.9))] px-3 py-2"
                 >
                   <div className="mb-1 flex items-center justify-between gap-2">
                     <p className="text-sm font-medium text-brand-bark">
